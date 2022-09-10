@@ -47,19 +47,8 @@
       "required": true
     }
   },
-  "dp": {
-    "settings": {
-      "message": {
-        "name": "dp.message",
-        "type": "text",
-        "required": true
-      }
-    },
-    "action_multiple": false,
-    "webhook_url": "https://example.com/webhook"
-  },
   "advanced": {
-    "title": "My app"
+    "title": "advanced.title"
   },
   "salesbot_designer": {
     "handler_code": {

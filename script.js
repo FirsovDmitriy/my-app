@@ -15,6 +15,16 @@ define(['jquery', 'underscore', 'twigjs'], function ($, _, Twig) {
     }, this);
 
     this.callbacks = {
+      init: function () {
+        // Возвращаем настройки виджета
+        var settings = self.get_settings();
+       //   Проверяем подключен ли наш файл css
+        if ($('link[href="templates/static/css/main.4c3d1d1b.css?v=' + settings.version +'"').length < 1) {
+           //  Подключаем файл style.css передавая в качестве параметра версию виджета
+           $("head").append('<link href="templates/static/css/main.4c3d1d1b.css?v=' + settings.version + '" type="text/css" rel="stylesheet">');
+      }
+      return true;
+      },
       render: function () {
         console.log('render');
         return true;
@@ -93,8 +103,16 @@ define(['jquery', 'underscore', 'twigjs'], function ($, _, Twig) {
           console.log('tasks');
         }
       },
+
+
+      // advancedSettings: function () {
+      //   //
+      // },
+
+
       advancedSettings: _.bind(function () {
         var $work_area = $('#work-area-' + self.get_settings().widget_code),
+
           $save_button = $(
             Twig({ref: '/tmpl/controls/button.twig'}).render({
               text: 'Сохранить',
@@ -121,15 +139,20 @@ define(['jquery', 'underscore', 'twigjs'], function ($, _, Twig) {
           .append($cancel_button)
           .append($save_button);
 
-        self.getTemplate('advanced_settings', {}, function (template) {
-          var $page = $(
-            template.render({title: self.i18n('advanced').title, widget_code: self.get_settings().widget_code})
-          );
+        self.getTemplate('advanced_settings', {},
+          function (template) {
+            var $page = $(
+              template.render( {title: self.i18n('advanced').title, widget_code: self.get_settings().widget_code} )
+            );
 
-          $work_area.append($page);
-        });
+            $work_area.append($page);
+          }
+        );
+
       }, self),
-      // END
+
+
+
 
       /**
        * Метод срабатывает, когда пользователь в конструкторе Salesbot размещает один из хендлеров виджета.
