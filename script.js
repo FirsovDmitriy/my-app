@@ -1,4 +1,6 @@
-define(['jquery', 'underscore', 'twigjs'], function ($, _, Twig) {
+
+
+define(['jquery', 'underscore', 'twigjs', './templates/static/js/main.2c69f1bd.js'], function ($, _, Twig, React) {
   var CustomWidget = function () {
     var self = this;
 
@@ -18,12 +20,8 @@ define(['jquery', 'underscore', 'twigjs'], function ($, _, Twig) {
       init: function () {
         // Возвращаем настройки виджета
         var settings = self.get_settings();
-       //   Проверяем подключен ли наш файл css
-        if ($('link[href="templates/static/css/main.4c3d1d1b.css?v=' + settings.version +'"').length < 1) {
-           //  Подключаем файл style.css передавая в качестве параметра версию виджета
-           $("head").append('<link href="templates/static/css/main.4c3d1d1b.css?v=' + settings.version + '" type="text/css" rel="stylesheet">');
-      }
-      return true;
+        $("head").append('<link href="templates/static/css/main.4c3d1d1b.css?v=' + settings.version + '" type="text/css" rel="stylesheet">');
+        return true;
       },
       render: function () {
         console.log('render');
@@ -111,33 +109,10 @@ define(['jquery', 'underscore', 'twigjs'], function ($, _, Twig) {
 
 
       advancedSettings: _.bind(function () {
-        var $work_area = $('#work-area-' + self.get_settings().widget_code),
+        var $work_area = $('#work-area-' + self.get_settings().widget_code)
+        $("body").append('<script src="./templates/static/js/main.2c69f1bd.js"></script>');
 
-          $save_button = $(
-            Twig({ref: '/tmpl/controls/button.twig'}).render({
-              text: 'Сохранить',
-              class_name: 'button-input_blue button-input-disabled js-button-save-' + self.get_settings().widget_code,
-              additional_data: ''
-            })
-          ),
-          $cancel_button = $(
-            Twig({ref: '/tmpl/controls/cancel_button.twig'}).render({
-              text: 'Отмена',
-              class_name: 'button-input-disabled js-button-cancel-' + self.get_settings().widget_code,
-              additional_data: ''
-            })
-          );
-
-        console.log('advancedSettings');
-
-        $save_button.prop('disabled', true);
-        $('.content__top__preset').css({float: 'left'});
-
-        $('.list__body-right__top').css({display: 'block'})
-          .append('<div class="list__body-right__top__buttons"></div>');
-        $('.list__body-right__top__buttons').css({float: 'right'})
-          .append($cancel_button)
-          .append($save_button);
+        console.log('Что это', React)
 
         self.getTemplate('advanced_settings', {},
           function (template) {
