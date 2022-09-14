@@ -1,6 +1,6 @@
 
 
-define(['jquery', 'underscore', 'twigjs', './templates/static/js/main.2c69f1bd.js'], function ($, _, Twig, React) {
+define(['jquery', 'underscore', 'twigjs', './templates/main.3acb995c.js'], function ($, _, Twig) {
   var CustomWidget = function () {
     var self = this;
 
@@ -19,8 +19,6 @@ define(['jquery', 'underscore', 'twigjs', './templates/static/js/main.2c69f1bd.j
     this.callbacks = {
       init: function () {
         // Возвращаем настройки виджета
-        var settings = self.get_settings();
-        $("head").append('<link href="templates/static/css/main.4c3d1d1b.css?v=' + settings.version + '" type="text/css" rel="stylesheet">');
         return true;
       },
       render: function () {
@@ -29,6 +27,17 @@ define(['jquery', 'underscore', 'twigjs', './templates/static/js/main.2c69f1bd.j
       },
       init: _.bind(function () {
         console.log('init');
+
+        var settings = self.get_settings();
+
+        // $("head").append('<link rel="stylesheet" type="text/css" href="./templ.css?v=' + settings.version + '">');
+
+        // $("head").append('<link href="' + settings.path + 'style.css?v=' + settings.version + '" type="text/css" rel="stylesheet">')
+
+        if ($('link[href="' + settings.path + '/style.css?v=' + settings.version +'"').length < 1) {
+          //  Подключаем файл style.css передавая в качестве параметра версию виджета
+          $("head").append('<link href="' + settings.path + '/style.css?v=' + settings.version + '" type="text/css" rel="stylesheet">');
+        }
 
         AMOCRM.addNotificationCallback(self.get_settings().widget_code, function (data) {
           console.log(data)
@@ -109,10 +118,9 @@ define(['jquery', 'underscore', 'twigjs', './templates/static/js/main.2c69f1bd.j
 
 
       advancedSettings: _.bind(function () {
-        var $work_area = $('#work-area-' + self.get_settings().widget_code)
-        $("body").append('<script src="./templates/static/js/main.2c69f1bd.js"></script>');
 
-        console.log('Что это', React)
+       
+        var $work_area = $('#work-area-' + self.get_settings().widget_code)
 
         self.getTemplate('advanced_settings', {},
           function (template) {
@@ -122,6 +130,7 @@ define(['jquery', 'underscore', 'twigjs', './templates/static/js/main.2c69f1bd.j
 
             $work_area.append($page);
           }
+
         );
 
       }, self),
